@@ -1,6 +1,8 @@
 # METHOD | Robot.activateBlock()
 @using akrobots
 
+@var utils.debug("Executing action: ACTIVATE_BLOCK")
+
 @define Int facing_direction = (util::executeAndQueryResult("/data get entity {{this.entity.getUniqueId()}} Rotation[0]") + 720) % 360
 @define Int delta_x = 0
 @define Int delta_z = 0

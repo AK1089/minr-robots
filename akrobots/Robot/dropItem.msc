@@ -2,6 +2,8 @@
 @fast
 @using akrobots
 
+@var utils.debug("Executing action: DROP_ITEM")
+
 @define Int facing_direction = (util::executeAndQueryResult("/data get entity {{this.entity.getUniqueId()}} Rotation[0]") + 720) % 360
 @define String delta_x = "0.0"
 @define String delta_z = "0.0"

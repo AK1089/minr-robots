@@ -20,6 +20,8 @@
 @fi
 
 @define String blockType = (item + "").replace(" ", "_").toLowerCase()
+@var utils.debug("Picked up item {{blockType}}")
 @bypass /minecraft:kill {{item.getUniqueId()}}
 @var this.playsound("entity.item.pickup")
 @var this.inventory.append(blockType)
+@var utils.debug("Inventory is now {{this.inventory}}")

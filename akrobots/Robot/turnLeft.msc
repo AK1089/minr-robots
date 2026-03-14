@@ -1,6 +1,9 @@
 # METHOD | Robot.turnLeft()
 @fast
 
+@using akrobots
+@var utils.debug("Executing action: TURN_LEFT")
+
 @define Int facing_direction = util::executeAndQueryResult("/data get entity {{this.entity.getUniqueId()}} Rotation[0]")
 @bypass /data modify entity {{this.entity.getUniqueId()}} Rotation[0] set value {{(facing_direction + 270) % 360}}.0f
 @var this.playsound("block.stone.step")

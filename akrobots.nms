@@ -177,6 +177,9 @@
     # Blocks that the robot can break to move through or collect resources.
     String[] breakableBlocks = String["white_concrete", "stone", "raw_iron_block", "dirt"]
 
+    # Enables developer debug output through utils.debug.
+    Boolean debugEnabled = true
+
     # List containing all the levels in the game.
     Level[] levels = Level[]
 

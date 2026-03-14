@@ -41,6 +41,7 @@
     @return
 @fi
 
+@var utils.debug("Compiling robot script...")
 @define Script script = parser.parseScript(player, book)
 @var script.robot = Robot(entity, index)
 @var script.robot.reset()

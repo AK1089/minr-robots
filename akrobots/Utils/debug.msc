@@ -1,2 +1,6 @@
 # METHOD | Utils.debug(String message)
-@console {{message}}
+@using akrobots
+
+@if debugEnabled
+    @bypass /tellraw AK1089 ["",{"text":"[akrobots] ","color":"yellow"},{"text":"{{message}}","color":"gray"}]
+@fi

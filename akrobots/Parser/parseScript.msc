@@ -15,6 +15,7 @@
         @if line.startsWith("# ")
             @if currentRoutineLines.length() > 0
                 @var script.routines.append(Routine(currentRoutineName, currentRoutineLines))
+                @var utils.debug("Compiling function {{currentRoutineName}}.robot")
                 @var currentRoutineLines = String[]
             @fi
 
@@ -33,6 +34,8 @@
 
 @if currentRoutineLines.length() > 0
     @var script.routines.append(Routine(currentRoutineName, currentRoutineLines))
+    @var utils.debug("Compiling function {{currentRoutineName}}.robot")
 @fi
 
+@var utils.debug("Successfully compiled scripts; now executing.")
 @return script
