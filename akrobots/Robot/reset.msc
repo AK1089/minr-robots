@@ -1,7 +1,12 @@
 # METHOD | Robot.reset()
+@fast
+@using akrobots
+
 @var currentlyRunning[this.id] = false
 @var this.active = false
+
 @delay 20
+
 @var this.entity.teleport(this.startPosition)
 @bypass /minr restore claude_level_{{this.id}} Theta
 @bypass /data modify entity @e[tag=claude_level_{{this.id}}_check,limit=1] Items set value []

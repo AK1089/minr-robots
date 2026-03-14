@@ -1,7 +1,7 @@
 # METHOD | Robot.waitForSeconds(Int seconds)
 @fast
-
 @using akrobots
+
 @var utils.debug("Executing action: WAIT (seconds={{seconds}})")
 
 @for Int i in list::range(0, seconds)

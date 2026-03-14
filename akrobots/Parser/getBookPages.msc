@@ -1,4 +1,7 @@
 # METHOD | Parser.getBookPages(Item book) -> String[]
+@fast
+@using akrobots
+
 @define String bookString = book.string()
 
 # Extract the pages section from the serialized book payload.

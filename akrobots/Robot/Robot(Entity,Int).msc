@@ -1,4 +1,7 @@
 # CONSTRUCTOR | Robot(Entity entity, Int id)
+@fast
+@using akrobots
+
 @var this.entity = entity
 @var this.inventory = String["diamond_pickaxe"]
 @var this.currentlyHeldItem = 0

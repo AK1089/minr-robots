@@ -1,1 +1,3 @@
 # CONSTRUCTOR | TriggerHandler()
+@fast
+@using akrobots

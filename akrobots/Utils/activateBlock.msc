@@ -1,5 +1,6 @@
 # METHOD | Utils.activateBlock(String coords)
 @fast
+@using akrobots
 
 # Interaction type:
 # 0 - lever

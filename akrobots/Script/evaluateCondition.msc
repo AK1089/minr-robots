@@ -1,4 +1,5 @@
 # METHOD | Script.evaluateCondition(String condition) -> Boolean
+@fast
 @using akrobots
 
 @define String[] parts = condition.split(" ")

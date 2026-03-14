@@ -1,6 +1,7 @@
 # METHOD | TriggerHandler.onRobotClick(Player player, Entity entity, Int index)
-@global_cooldown 10
+@fast
 @using akrobots
+@global_cooldown 10
 
 # Editing the armor stand to move it around shouldn't do anything.
 @if player.getItemInMainHand().getItemType().toLowerCase() == "flint"

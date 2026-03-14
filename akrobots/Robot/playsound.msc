@@ -1,2 +1,5 @@
 # METHOD | Robot.playsound(String sound)
+@fast
+@using akrobots
+
 @bypass /execute as {{this.entity.getUniqueId()}} @s run playsound minecraft:{{sound}} block @a[distance=..50] ~ ~ ~

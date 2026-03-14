@@ -1,4 +1,5 @@
 # METHOD | Parser.parseScript(Player player, Item book) -> akrobots::Script
+@fast
 @using akrobots
 
 @define Script script = Script(player, Routine[])

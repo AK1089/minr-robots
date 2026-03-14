@@ -1,4 +1,7 @@
 # METHOD | Level.checkCompletion(Player player) -> Boolean
+@fast
+@using akrobots
+
 @if this.id == 1
     @return util::executeAndQueryResult("/execute in theta if entity @e[type=minecraft:armor_stand,x=-12633,y=114,z=-12523,dx=1,dy=3,dz=1]") > 0
 @elseif this.id == 2

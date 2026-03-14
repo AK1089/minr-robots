@@ -1,4 +1,5 @@
 # METHOD | Utils.debug(String message)
+@fast
 @using akrobots
 
 @if debugEnabled

@@ -1,7 +1,7 @@
 # METHOD | Robot.switchItem(String itemName)
 @fast
-
 @using akrobots
+
 @var utils.debug("Executing action: SWITCH_ITEM (item={{itemName}})")
 
 @if !this.inventory.contains(itemName)

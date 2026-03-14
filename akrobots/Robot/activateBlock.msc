@@ -1,4 +1,5 @@
 # METHOD | Robot.activateBlock()
+@fast
 @using akrobots
 
 @var utils.debug("Executing action: ACTIVATE_BLOCK")

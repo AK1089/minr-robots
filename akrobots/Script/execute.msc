@@ -1,4 +1,5 @@
 # METHOD | Script.execute(String routineName, Int startIndex) -> Boolean
+@fast
 @using akrobots
 
 @define Player player = this.player

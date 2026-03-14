@@ -1,4 +1,5 @@
 # METHOD | Script.getRoutine(String name) -> akrobots::Routine
+@fast
 @using akrobots
 
 @for Routine routine in this.routines

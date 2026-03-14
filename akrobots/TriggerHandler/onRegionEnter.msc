@@ -1,4 +1,5 @@
 # METHOD | TriggerHandler.onRegionEnter(Player player, Int index)
+@fast
 @using akrobots
 
 @if !levelComplete[index - 1]

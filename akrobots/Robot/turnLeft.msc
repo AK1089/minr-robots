@@ -1,7 +1,7 @@
 # METHOD | Robot.turnLeft()
 @fast
-
 @using akrobots
+
 @var utils.debug("Executing action: TURN_LEFT")
 
 @define Int facing_direction = util::executeAndQueryResult("/data get entity {{this.entity.getUniqueId()}} Rotation[0]")

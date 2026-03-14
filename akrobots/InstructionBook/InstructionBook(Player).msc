@@ -1,3 +1,6 @@
 # CONSTRUCTOR | InstructionBook(Player player)
+@fast
+@using akrobots
+
 @var this.player = player
 @var this.bonusContent = String[]
