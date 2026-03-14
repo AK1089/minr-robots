@@ -1,0 +1,42 @@
+# METHOD | Utils.activateBlock(String coords)
+@fast
+
+# Interaction type:
+# 0 - lever
+# 1 - button
+# 2 - trapdoor
+
+# Map interactable blocks to their redstone side effects.
+@define String[] keys = String["-12663 116 -12528 minecraft:polished_blackstone_button[face=wall,facing=west,"]
+@define String[] values = String["-12662 115 -12528 minecraft:redstone_torch[lit=true]"]
+@define String[] resets = String["-12662 115 -12528 air"]
+
+@define Int index = -1
+@for Int i in list::range(0, keys.length())
+    @if keys[i].contains(coords)
+        @var index = i
+    @fi
+@done
+
+@if index == -1
+    @return
+@fi
+
+@define Int interaction_type
+@if keys[index].contains("lever")
+    @var interaction_type = 0
+@elseif keys[index].contains("button")
+    @var interaction_type = 1
+@elseif keys[index].contains("trapdoor")
+    @var interaction_type = 2
+@else
+    @return
+@fi
+
+@if interaction_type == 1
+    @bypass /execute in minecraft:theta run setblock {{keys[index]}}powered=true]
+    @bypass /execute in minecraft:theta run setblock {{values[index]}}
+    @delay 20
+    @bypass /execute in minecraft:theta run setblock {{keys[index]}}powered=false]
+    @bypass /execute in minecraft:theta run setblock {{resets[index]}}
+@fi

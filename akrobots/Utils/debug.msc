@@ -1,0 +1,2 @@
+# METHOD | Utils.debug(String message)
+@console {{message}}

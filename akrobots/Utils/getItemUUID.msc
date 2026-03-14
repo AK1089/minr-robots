@@ -1,0 +1,56 @@
+# METHOD | Utils.getItemUUID(Int x, Int y, Int z) -> String
+
+# Alphanumeric characters used in hexadecimal.
+@define String[] hex_chars = String["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"]
+
+# Store all UUIDs found in the region.
+@define String[] all_uuids = String[]
+
+# Intermediate values for decimal-to-hex conversion.
+@define Long pow = 0L
+@define Long uuid_current = 0L
+@define Int next_digit_index = 0
+@define Boolean valid_uuid = false
+
+# The final UUID string assembled from hex digits.
+@define String[] u = String[]
+@define String uuidstring = ""
+
+# Limit matching to dropped items.
+@define String typestring = "type=minecraft:item,"
+
+@var u = String[]
+@var valid_uuid = false
+
+@for Int i in list::range(0, 4)
+    @var uuid_current = Long(util::executeAndQueryResult("/execute in minecraft:theta run data get entity @e[{{typestring}}x={{x}},y={{y}},z={{z}},dx=1,dy=1,dz=1,limit=1] UUID[{{i}}]"))
+
+    @if uuid_current != 0
+        @var valid_uuid = true
+
+        @if uuid_current < 0
+            @var uuid_current = Long(4294967296L + uuid_current)
+        @fi
+
+        @for Int pow_inverse in list::range(0, 8)
+            @var pow = Long(16 ^ (7 - pow_inverse))
+            @var next_digit_index = Int(uuid_current / pow)
+            @var u.append(hex_chars[next_digit_index])
+            @var uuid_current = Long(uuid_current - Long(next_digit_index * pow))
+        @done
+    @fi
+@done
+
+@if valid_uuid
+    @var uuidstring = u[0] + u[1] + u[2] + u[3] + u[4] + u[5] + u[6] + u[7] + "-" + u[8] + u[9] + u[10] + u[11] + "-" + u[12] + u[13] + u[14] + u[15] + "-" + u[16] + u[17] + u[18] + u[19] + "-" + u[20] + u[21] + u[22] + u[23] + u[24] + u[25] + u[26] + u[27] + u[28] + u[29] + u[30] + u[31]
+
+    @if !all_uuids.contains(uuidstring)
+        @var all_uuids.append(uuidstring)
+    @fi
+@fi
+
+@if all_uuids.length() >= 1
+    @return all_uuids[0]
+@fi
+
+@return ""
