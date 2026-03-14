@@ -6,11 +6,11 @@
 # Editing the armor stand to move it around shouldn't do anything.
 @if player.getItemInMainHand().getItemType().toLowerCase() == "flint"
     @player &7[&cInfo&7] &eManually overriding for edit mode.
-    @if levels[index] != null && levels[index].robot != null
-        @var levels[index].robot.active = false
+    @if levels[index - 1] != null && levels[index - 1].robot != null
+        @var levels[index - 1].robot.active = false
     @fi
-    @if levels[index] != null
-        @var levels[index].setCompleted(player, false)
+    @if levels[index - 1] != null
+        @var levels[index - 1].setCompleted(player, false)
     @fi
     @return
 @fi
@@ -18,15 +18,15 @@
 # Using the emergency stop item.
 @if player.getItemInMainHand().getItemType().toLowerCase() == "barrier"
     @player &7[&cInfo&7] &eUsing the &dEMERGENCY STOP&e...
-    @if levels[index] == null
-        @var levels[index] = Level(index, entity.getPosition())
+    @if levels[index - 1] == null
+        @var levels[index - 1] = Level(index, entity.getPosition())
     @fi
-    @if levels[index].robot == null
-        @var levels[index].robot = Robot(entity, index)
+    @if levels[index - 1].robot == null
+        @var levels[index - 1].robot = Robot(entity, index)
     @fi
-    @var levels[index].robot.active = false
+    @var levels[index - 1].robot.active = false
     @delay 10
-    @var entity.teleport(levels[index].robotStartPosition)
+    @var entity.teleport(levels[index - 1].robotStartPosition)
     @bypass /minr restore claude_level_{{index}} Theta
     @bypass /data modify entity @e[tag=claude_level_{{index}}_check,limit=1] Items set value []
     @bypass /data modify entity {{entity.getUniqueId()}} HandItems[0].id set value "diamond_pickaxe"
@@ -35,12 +35,12 @@
     @return
 @fi
 
-@if levels[index] != null && levels[index].getCompleted(player)
+@if levels[index - 1] != null && levels[index - 1].getCompleted(player)
     @player &7[&cInfo&7] &eYou have already completed this level!
     @return
 @fi
 
-@if levels[index] != null && levels[index].robot != null && levels[index].robot.active
+@if levels[index - 1] != null && levels[index - 1].robot != null && levels[index - 1].robot.active
     @player &7[&cInfo&7] &eClaude is currently executing a script! Please wait for him to finish, or use the emergency stop.
     @return
 @fi
@@ -53,15 +53,15 @@
 
 @var utils.debug("Compiling robot script...")
 @define Script script = parser.parseScript(player, book)
-@if levels[index] == null
-    @var levels[index] = Level(index, entity.getPosition())
-@fi
-@if levels[index].robot == null
-    @var levels[index].robot = Robot(entity, index)
+@if levels[index - 1] == null
+    @var levels[index - 1] = Level(index, entity.getPosition())
+    @fi
+@if levels[index - 1].robot == null
+    @var levels[index - 1].robot = Robot(entity, index)
 @else
-    @var levels[index].robot.entity = entity
+    @var levels[index - 1].robot.entity = entity
 @fi
-@var script.robot = levels[index].robot
+@var script.robot = levels[index - 1].robot
 @var script.robot.reset()
 
 @var script.robot.active = true
@@ -73,9 +73,9 @@
 
 @player &7[&cInfo&7] &eVerifying completion...
 @delay 20
-@var levels[index].setCompleted(player, levels[index].checkCompletion(player))
+@var levels[index - 1].setCompleted(player, levels[index - 1].checkCompletion(player))
 
-@if levels[index].getCompleted(player)
+@if levels[index - 1].getCompleted(player)
     @bypass /playsound minecraft:entity.player.levelup master @s
     @player &7[&cInfo&7] &aLevel {{index}} complete - well done!
     @delay 40

@@ -207,5 +207,6 @@
     # The trigger handler instance used to manage script triggers based on player interactions.
     TriggerHandler triggerHandler = TriggerHandler()
 
-
+    # The name of the world the map exists in.
+    String world = "Theta"
 @endnamespace

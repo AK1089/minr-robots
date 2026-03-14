@@ -25,7 +25,7 @@
     @var parts = line.replace(" ", "").replace(")", "").trim().split("\(")
     @var parts.append("")
     @var command = parts[0].toLowerCase()
-    @var utils.debug("Executing line {{line}}: command = " + command)
+    @var utils.debug("Executing code instruction: " + line)
 
     @if !this.robot.active || !player.isOnline()
         @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Execution manually terminated.

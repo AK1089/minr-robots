@@ -2,4 +2,4 @@
 @fast
 @using akrobots
 
-@return completedLevels[this.id]
+@return completedLevels[this.id - 1]

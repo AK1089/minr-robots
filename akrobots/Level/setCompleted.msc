@@ -2,4 +2,4 @@
 @fast
 @using akrobots
 
-@var completedLevels[this.id] = completed
+@var completedLevels[this.id - 1] = completed

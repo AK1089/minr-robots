@@ -2,8 +2,8 @@
 @fast
 @using akrobots
 
-@if index > 1 && !levels[index - 1].getCompleted(player)
+@if index > 1 && !levels[index - 2].getCompleted(player)
     @player &7[&cInfo&7] &eYou have not unlocked this level yet!
     @bypass /playsound minecraft:block.note_block.bass master @s ~ ~ ~ 2 0.3 1
-    @bypass /teleport {{player}} {{levels[index].entryTeleport}}
+    @bypass /teleport {{player}} {{levels[index - 1].entryTeleport}}
 @fi
