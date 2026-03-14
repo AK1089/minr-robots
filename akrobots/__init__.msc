@@ -1,0 +1,18 @@
+# SCRIPT | akrobots.__init__
+@fast
+@using akrobots
+
+@bypass /teleport @s -12652.5 115.00 -12526.5
+
+@var levels[1] = Level(1, Position(-12636.50, 115.00, -12526.50, -90, 0))
+@var levels[1].robot = Robot(Entity("ed17aa85-bd57-41bf-80ba-40c703046301"), 1)
+@var levels[1].entryTeleport = "-12640.50 115.00 -12525.50 -90 0"
+
+@var levels[2] = Level(2, Position(-12627.50, 115.00, -12519.50, -90, 0))
+@var levels[2].robot = Robot(Entity("fca8c341-7a8f-4203-a5e0-7d0bb949a38c"), 2)
+@var levels[2].entryTeleport = "-12630.50 115.00 -12523.50 -90 0"
+
+@bypass /s r w -12640 114 -12526
+@bypass /s c w -12640 114 -12526 @var akrobots::onRegionEnter(player, 1)
+@bypass /s r w -12630 114 -12524
+@bypass /s c w -12630 114 -12524 @var akrobots::onRegionEnter(player, 2)
