@@ -1,0 +1,9 @@
+# METHOD | Robot.waitForSeconds(Int seconds)
+@fast
+
+@for Int i in list::range(0, seconds)
+    @for Int j in list::range(0, 4)
+        @var this.pickUpItems()
+        @delay 5
+    @done
+@done

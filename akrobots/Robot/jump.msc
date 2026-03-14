@@ -1,0 +1,37 @@
+# METHOD | Robot.jump()
+@fast
+@using akrobots
+
+@define Int facing_direction = (util::executeAndQueryResult("/data get entity {{this.entity.getUniqueId()}} Rotation[0]") + 720) % 360
+@define Int delta_x = 0
+@define Int delta_z = 0
+
+@if facing_direction == 0
+    @var delta_z = 1
+@elseif facing_direction == 90
+    @var delta_x = -1
+@elseif facing_direction == 180
+    @var delta_z = -1
+@elseif facing_direction == 270
+    @var delta_x = 1
+@fi
+
+@if !enterableBlocks.contains(Block((this.entity.getLocation().asVector3() + Vector3(delta_x, 1, delta_z)).asLocation("Theta").asBlockLocation()).getBlockType().toLowerCase())
+    @bypass /execute as {{this.entity.getUniqueId()}} at @s run teleport @s ~ ~1 ~
+    @delay 5
+    @var this.pickUpItems()
+    @return
+@fi
+
+@define String to_stand_on = Block((this.entity.getLocation().asVector3() + Vector3(delta_x, 0, delta_z)).asLocation("Theta").asBlockLocation()).getBlockType().toLowerCase()
+@if enterableBlocks.contains(to_stand_on) || to_stand_on.contains("fence") || to_stand_on.contains("wall")
+    @bypass /execute as {{this.entity.getUniqueId()}} at @s run teleport @s ~ ~1 ~
+    @delay 5
+    @var this.pickUpItems()
+    @return
+@fi
+
+@bypass /execute as {{this.entity.getUniqueId()}} at @s run teleport @s ~{{delta_x}} ~1 ~{{delta_z}}
+@var this.playsound("block.stone.fall")
+@var this.pickUpItems()
+@delay 5

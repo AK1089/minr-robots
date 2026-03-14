@@ -1,0 +1,11 @@
+# METHOD | Robot.switchItem(String itemName)
+@fast
+
+@if !this.inventory.contains(itemName)
+    @return
+@fi
+
+@var this.currentlyHeldItem = this.inventory.find(itemName)
+@bypass /data modify entity {{this.entity.getUniqueId()}} HandItems[0].id set value "{{itemName}}"
+@var this.playsound("ui.button.click")
+@delay 5

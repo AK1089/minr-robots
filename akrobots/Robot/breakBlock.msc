@@ -1,0 +1,27 @@
+# METHOD | Robot.breakBlock()
+@fast
+@using akrobots
+
+@define Int facing_direction = (util::executeAndQueryResult("/data get entity {{this.entity.getUniqueId()}} Rotation[0]") + 720) % 360
+@define Int delta_x = 0
+@define Int delta_z = 0
+
+@if facing_direction == 0
+    @var delta_z = 1
+@elseif facing_direction == 90
+    @var delta_x = -1
+@elseif facing_direction == 180
+    @var delta_z = -1
+@elseif facing_direction == 270
+    @var delta_x = 1
+@fi
+
+@define Block blockSlot = Block((this.entity.getLocation().asVector3() + Vector3(delta_x, 0, delta_z)).asLocation("Theta").asBlockLocation())
+@if !breakableBlocks.contains(blockSlot.getBlockType().toLowerCase())
+    @delay 5
+    @return
+@fi
+
+@var this.playsound("block.stone.break")
+@bypass /setblock {{blockSlot + ""}} air destroy
+@delay 5
