@@ -32,7 +32,7 @@
 
     @var this.pickUpItems()
 
-    @if !currentlyRunning[this.id]
+    @if !this.active
         @return
     @fi
 

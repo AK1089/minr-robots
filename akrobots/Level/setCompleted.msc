@@ -1,0 +1,5 @@
+# METHOD | Level.setCompleted(Player player, Boolean completed)
+@fast
+@using akrobots
+
+@var completedLevels[this.id] = completed

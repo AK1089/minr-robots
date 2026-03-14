@@ -1,0 +1,5 @@
+# METHOD | Level.getCompleted(Player player) -> Boolean
+@fast
+@using akrobots
+
+@return completedLevels[this.id]
