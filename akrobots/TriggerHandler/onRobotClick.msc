@@ -3,6 +3,8 @@
 @using akrobots
 @global_cooldown 10
 
+@var utils.debug("Player " + player.getName() + " clicked on robot for level " + index)
+
 # Editing the armor stand to move it around shouldn't do anything.
 @if player.getItemInMainHand().getItemType().toLowerCase() == "flint"
     @player &7[&cInfo&7] &eManually overriding for edit mode.

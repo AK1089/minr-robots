@@ -192,8 +192,8 @@
     # List containing all the levels in the game.
     Level[] levels = Level[]
 
-    # Per-player level completion state; index 0 starts unlocked so level 1 can be entered.
-    relative Boolean[] completedLevels = Boolean[true, false, false]
+    # Per-player level completion state.
+    relative Boolean[] completedLevels = Boolean[false, false, false, false, false]
 
     # Each player's instruction book.
     relative InstructionBook instructionBook
