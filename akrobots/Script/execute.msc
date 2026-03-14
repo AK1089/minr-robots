@@ -1,0 +1,181 @@
+# METHOD | Script.execute(String routineName, Int startIndex) -> Boolean
+@using akrobots
+
+@define Player player = this.player
+@define Routine routine = this.getRoutine(routineName)
+
+@if routine == null
+    @player &cError&7: Function "{{routineName}}" is not defined.
+    @return false
+@fi
+
+@define String line
+@define String[] parts
+@define String command
+@define Int afterBranchIndex
+@define String targetLine
+
+@for Int i in list::range(startIndex, routine.lines.length())
+    @var this.robot.pickUpItems()
+
+    @var line = routine.lines[i]
+    @var parts = line.replace(" ", "").replace(")", "").trim().split("\(")
+    @var parts.append("")
+    @var command = parts[0].toLowerCase()
+
+    @if !currentlyRunning[this.robot.id] || !player.isOnline()
+        @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Execution manually terminated.
+        @var this.robot.reset()
+        @return false
+    @fi
+
+    @if !Region("claude_level_{{this.robot.id}}", "Theta").containsLocation(this.robot.entity.getLocation().asBlockLocation())
+        @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Robot may not leave designated bounds!
+        @var this.robot.reset()
+        @return false
+    @fi
+
+    @if command == "forward"
+        @if parts[1].trim().length() == 0
+            @var parts[1] = "1"
+        @fi
+
+        @if !parts[1].trim().matches("-?\\d+")
+            @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Could not parse integer "{{parts[1].trim()}}".
+            @return false
+        @fi
+
+        @if Int(parts[1].trim()) > 32 || Int(parts[1].trim()) < -32
+            @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Maximum distance of 32 exceeded (specified {{Int(parts[1].trim())}}).
+            @return false
+        @fi
+
+        @var this.robot.moveForward(Int(parts[1].trim()))
+
+    @elseif command == "turnleft"
+        @var this.robot.turnLeft()
+
+    @elseif command == "turnright"
+        @var this.robot.turnRight()
+
+    @elseif command == "wait"
+        @if parts[1].trim().length() == 0
+            @var parts[1] = "1"
+        @fi
+
+        @if !parts[1].trim().matches("\\d+")
+            @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Could not parse integer "{{parts[1].trim()}}".
+            @return false
+        @fi
+
+        @if Int(parts[1].trim()) > 8
+            @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Maximum wait time of 8s exceeded (specified {{Int(parts[1].trim())}}).
+            @return false
+        @fi
+
+        @var this.robot.waitForSeconds(Int(parts[1].trim()))
+
+    @elseif command == "jump"
+        @var this.robot.jump()
+
+    @elseif command == "drop"
+        @var this.robot.dropItem()
+
+    @elseif command == "place"
+        @var this.robot.placeBlock()
+
+    @elseif command == "break"
+        @var this.robot.breakBlock()
+
+    @elseif command == "activate"
+        @var this.robot.activateBlock()
+
+    @elseif command == "switchitem"
+        @var this.robot.switchItem(parts[1].trim().replace("\"", ""))
+
+    @elseif command == "if"
+        @var afterBranchIndex = -1
+        @var targetLine = "endif()"
+        @for Int j in list::range(i + 1, routine.lines.length())
+            @if afterBranchIndex == -1 && routine.lines[j].replace(" ", "").toLowerCase() == targetLine
+                @var afterBranchIndex = j
+            @fi
+        @done
+
+        @if afterBranchIndex == -1
+            @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Missing EndIf for If statement.
+            @return false
+        @fi
+
+        @if this.evaluateCondition(parts[1].trim() + " " + parts[2].trim())
+            @if !this.execute(routineName, i + 1)
+                @return false
+            @fi
+        @fi
+
+        @return this.execute(routineName, afterBranchIndex + 1)
+
+    @elseif command == "repeat"
+        @if parts[1].trim().length() == 0
+            @var parts[1] = "1"
+        @fi
+
+        @if !parts[1].trim().matches("\\d+")
+            @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Could not parse integer "{{parts[1].trim()}}".
+            @return false
+        @fi
+
+        @if Int(parts[1].trim()) > 32
+            @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Maximum repeat count of 32 exceeded (specified {{Int(parts[1].trim())}}).
+            @return false
+        @fi
+
+        @var afterBranchIndex = -1
+        @var targetLine = "endrepeat()"
+        @for Int j in list::range(i + 1, routine.lines.length())
+            @if afterBranchIndex == -1 && routine.lines[j].replace(" ", "").toLowerCase() == targetLine
+                @var afterBranchIndex = j
+            @fi
+        @done
+
+        @if afterBranchIndex == -1
+            @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Missing EndRepeat for Repeat statement.
+            @return false
+        @fi
+
+        @for Int j in list::range(0, Int(parts[1].trim()))
+            @if !this.execute(routineName, i + 1)
+                @return false
+            @fi
+        @done
+
+        @return this.execute(routineName, afterBranchIndex + 1)
+
+    @elseif command == "endif" || command == "endrepeat"
+        @return true
+
+    @elseif command == "subroutine"
+        @var this.execute(parts[1].trim(), 0)
+
+    @elseif command == "exit"
+        @return true
+
+    @else
+        @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Could not parse command {{command}}
+        @return false
+    @fi
+
+    @if !currentlyRunning[this.robot.id] || !player.isOnline()
+        @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Execution manually terminated.
+        @var this.robot.reset()
+        @return false
+    @fi
+
+    @if !Region("claude_level_{{this.robot.id}}", "Theta").containsLocation(this.robot.entity.getLocation().asBlockLocation())
+        @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Robot may not leave designated bounds!
+        @var this.robot.reset()
+        @return false
+    @fi
+@done
+
+@return true
