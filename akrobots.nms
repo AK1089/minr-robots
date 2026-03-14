@@ -162,7 +162,7 @@
         TriggerHandler()
 
         # Triggers when a player enters a specific region in the game world.
-        Void onRegionEnter(Player player)
+        Void onRegionEnter(Player player, Int index)
 
         # Triggers when a player clicks on a robot in the game world.
         Void onRobotClick(Player player, Entity entity, Int index)
