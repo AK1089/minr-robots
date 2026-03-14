@@ -1,0 +1,193 @@
+@namespace akrobots
+
+    # A Robot represents an entity in the game that can perform various actions based on instructions from a script.
+    @class Robot
+        # Constructor which takes a physical entity and an internal numeric ID to create a robot instance.
+        Robot(Entity entity, Int id)
+
+        # The physical entity in the game that this robot represents.
+        Entity entity
+
+        # The inventory of the robot, represented as an array of strings (item names).
+        String[] inventory
+
+        # The index of the currently held item in the inventory.
+        Int currentlyHeldItem
+
+        # The internal numeric ID of the robot, used for identification and tracking.
+        Int id
+
+        # The starting position of the robot in the game world, represented as a Position object.
+        Position startPosition
+
+        # A boolean indicating whether the robot is currently performing actions.
+        Boolean active
+
+        # Reset the robot to its initial state, including position and inventory.
+        reset()
+
+        # Drop the currently held item from the robot's inventory into the game world.
+        dropItem()
+
+        # Check for nearby items that the robot can pick up and add them to its inventory.
+        pickUpItems()
+
+        # Move the robot forward by a specified number of steps.
+        moveForward(Int steps)
+
+        # Turn the robot to the left (90 degrees).
+        turnLeft()
+
+        # Turn the robot to the right (90 degrees).
+        turnRight()
+
+        # Jump onto a block in front of the robot, if possible.
+        jump()
+
+        # Wait for a specified number of seconds before executing the next instruction.
+        waitForSeconds(Int seconds)
+
+        # Attempt to place a block from the robot's inventory into the space in front of it.
+        placeBlock()
+
+        # Attempt to break the block in front of the robot.
+        breakBlock()
+
+        # Attempt to activate the block in front of the robot (e.g., press a button or step on a pressure plate).
+        activateBlock()
+
+        # Hold an item from the robot's inventory by its name, making it the currently held item.
+        switchItem(String itemName)
+
+        # Play a sound effect as if the robot is making the sound, using the specified sound name.
+        playsound(String sound)
+    @endclass
+
+    # A Routine is a list of instructions for a robot to execute.
+    @class Routine
+        # Constructor which takes a name and an array of lines (instructions).
+        Routine(String name, String[] lines)
+
+        # The name of the routine.
+        String name
+
+        # The lines of instructions in the routine.
+        String[] lines
+    @endclass
+
+    # A Script is a collection of routines that a robot can execute, along with an associated player and robot.
+    @class Script
+        # Constructor which takes a player and an array of routines.
+        Script(Player player, akrobots::Routine[] routines)
+
+        # Function to get a routine by name.
+        akrobots::Routine getRoutine(String name)
+
+        # The player associated with this script.
+        Player player
+
+        # The robot associated with this script.
+        akrobots::Robot robot
+
+        # The routines in this script.
+        akrobots::Routine[] routines
+
+        # Function to execute a routine by name, starting from a specific line index.
+        Boolean execute(String routineName, Int startIndex)
+
+        # Function to evaluate a condition string and return a boolean result.
+        Boolean evaluateCondition(String condition)
+    @endclass
+
+    # A Level represents a specific challenge or puzzle in the game that the player must solve using a robot and a script.
+    @class Level
+        # Constructor for a level which builds the level based on a numeric ID and sets the starting position of the robot.
+        Level(Int id, Position robotStartPosition)
+
+        # The robot associated with this level, which the player will control to solve the level's challenge.
+        akrobots::Robot robot
+
+        # The starting position of the robot for this level.
+        Position robotStartPosition        
+
+        # Check whether the player has completed the level.
+        Boolean checkCompletion(Player player)
+    @endclass
+
+    # Instruction book with dynamic pages which tell the player what they have unlocked so far.
+    @class InstructionBook
+        # Constructor which takes a name and an array of pages (strings).
+        InstructionBook(Player player)
+
+        # The player associated with this instruction book.
+        Player player
+
+        # Bonus content unlocked to display in the instruction book.
+        String[] bonusContent
+        
+        # Give the instruction book to the player, updating its pages based on the player's progress and unlocked content.
+        giveBook()
+    @endclass
+
+    # A Parser is responsible for extracting information from books and creating scripts based on that information.
+    @class Parser
+        # Blank constructor to initialise the parser.
+        Parser()
+
+        # Function to extract the pages of a book as an array of strings.
+        String[] getBookPages(Item book)
+
+        # Function to parse a script from a book.
+        akrobots::Script parseScript(Player player, Item book)
+    @endclass
+
+    # Miscellaneous utility functions for the robot scripts.
+    @class Utils
+        # Blank constructor to initialise the utils.
+        Utils()
+
+        # Get the String UUID of an item at the specified coordinates (x, y, z) in the game world, or "" if there is no item at those coordinates.
+        String getItemUUID(Int x, Int y, Int z)
+        
+        # Activate the block at the specified coordinates (x, y, z) in the game world if it has a special function.
+        Void activateBlock(String coords)
+
+        # Output a debug message to the console for testing purposes.
+        Void debug(String message)
+    @endclass
+
+    # Class to handle script triggers when a player interacts with a robot in the game world.
+    @class TriggerHandler
+        # Blank constructor to initialise the trigger handler.
+        TriggerHandler()
+
+        # Triggers when a player enters a specific region in the game world.
+        Void onRegionEnter(Player player)
+
+        # Triggers when a player clicks on a robot in the game world.
+        Void onRobotClick(Player player, Entity entity, Int index)
+    @endclass
+
+    # Blocks with no collision that the robot can enter.
+    String[] enterableBlocks = String["air", "polished_blackstone_pressure_plate", "light_weighted_pressure_plate", "dark_oak_button", "redstone_wire", "polished_blackstone_button", "stone_pressure_plate", "ladder"]
+
+    # Blocks that the robot can break to move through or collect resources.
+    String[] breakableBlocks = String["white_concrete", "stone", "raw_iron_block", "dirt"]
+
+    # List containing all the levels in the game.
+    Level[] levels = Level[]
+
+    # Each player's instruction book.
+    relative InstructionBook instructionBook
+
+    # The parser instance used to create scripts from books.
+    Parser parser = Parser()
+
+    # The utils instance used for miscellaneous functions in the scripts.
+    Utils utils = Utils()
+
+    # The trigger handler instance used to manage script triggers based on player interactions.
+    TriggerHandler triggerHandler = TriggerHandler()
+
+
+@endnamespace
