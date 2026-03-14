@@ -25,9 +25,9 @@
     @var parts = line.replace(" ", "").replace(")", "").trim().split("\(")
     @var parts.append("")
     @var command = parts[0].toLowerCase()
-    @var utils.debug("Executing line {{line}} (command = {{command}})")
+    @var utils.debug("Executing line {{line}}: command = " + command)
 
-    @if !currentlyRunning[this.robot.id] || !player.isOnline()
+    @if !this.robot.active || !player.isOnline()
         @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Execution manually terminated.
         @var this.robot.reset()
         @return false
@@ -169,7 +169,7 @@
         @return false
     @fi
 
-    @if !currentlyRunning[this.robot.id] || !player.isOnline()
+    @if !this.robot.active || !player.isOnline()
         @player &cError &f(Function &d{{routine.name}}.robot&f, Line {{i + 1}})&7: Execution manually terminated.
         @var this.robot.reset()
         @return false

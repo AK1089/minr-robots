@@ -110,8 +110,17 @@
         # The robot associated with this level, which the player will control to solve the level's challenge.
         akrobots::Robot robot
 
+        # Where to send the player if they try to enter the level before it is unlocked.
+        String entryTeleport
+
         # The starting position of the robot for this level.
         Position robotStartPosition        
+
+        # Check whether this player has completed the level.
+        Boolean getCompleted(Player player)
+
+        # Set whether this player has completed the level.
+        setCompleted(Player player, Boolean completed)
 
         # Check whether the player has completed the level.
         Boolean checkCompletion(Player player)
@@ -182,6 +191,9 @@
 
     # List containing all the levels in the game.
     Level[] levels = Level[]
+
+    # Per-player level completion state; index 0 starts unlocked so level 1 can be entered.
+    relative Boolean[] completedLevels = Boolean[true, false, false]
 
     # Each player's instruction book.
     relative InstructionBook instructionBook

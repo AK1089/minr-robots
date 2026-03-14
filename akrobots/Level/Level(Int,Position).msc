@@ -3,4 +3,5 @@
 @using akrobots
 
 @var this.id = id
+@var this.entryTeleport = "-12652.5 115.00 -12526.5"
 @var this.robotStartPosition = robotStartPosition

@@ -2,7 +2,7 @@
 @fast
 @using akrobots
 
-@var currentlyRunning[this.id] = false
+@var utils.debug("Executing action: RESET")
 @var this.active = false
 
 @delay 20
