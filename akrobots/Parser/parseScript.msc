@@ -1,0 +1,38 @@
+# METHOD | Parser.parseScript(Player player, Item book) -> akrobots::Script
+@using akrobots
+
+@define Script script = Script(player, Routine[])
+
+# Track the current routine while iterating through book pages.
+@define String currentRoutineName = "main"
+@define String[] currentRoutineLines = String[]
+
+@for String page in this.getBookPages(book)
+    @for String line in page.split("\n")
+        @var line = line.toLowerCase()
+
+        # A "# name.robot" line starts a new routine.
+        @if line.startsWith("# ")
+            @if currentRoutineLines.length() > 0
+                @var script.routines.append(Routine(currentRoutineName, currentRoutineLines))
+                @var currentRoutineLines = String[]
+            @fi
+
+            @var currentRoutineName = line.trim().substring(2, line.trim().length() - 6)
+
+        # Non-empty instruction lines are appended without their numeric prefix.
+        @elseif line.trim().length() > 0
+            @if line.trim().contains(" ")
+                @var currentRoutineLines.append(line.trim().substring(line.trim().indexOf(" "), line.trim().length()).trim())
+            @else
+                @var currentRoutineLines.append(line.trim())
+            @fi
+        @fi
+    @done
+@done
+
+@if currentRoutineLines.length() > 0
+    @var script.routines.append(Routine(currentRoutineName, currentRoutineLines))
+@fi
+
+@return script

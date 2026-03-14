@@ -1,0 +1,21 @@
+# METHOD | Parser.getBookPages(Item book) -> String[]
+@define String bookString = book.string()
+
+# Extract the pages section from the serialized book payload.
+@define Int startIndex = bookString.indexOf("pages=[") + 7
+@define String pagesString = bookString.substring(startIndex, bookString.length() - 3)
+
+# Split the raw pages and strip the "# file ..." prefix when present.
+@define String[] rawPages = pagesString.split(", ")
+@define String[] pages = String[]
+@for Int i in list::range(0, rawPages.length())
+    @define String rawPage = rawPages[i]
+    @define Int newlineIndex = rawPage.indexOf("\\n")
+    @if newlineIndex != -1
+        @var pages[i] = rawPage.substring(newlineIndex + 2, rawPage.length() - 2)
+    @else
+        @var pages[i] = rawPage
+    @fi
+@done
+
+@return pages
