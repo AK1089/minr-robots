@@ -1,2 +1,3 @@
 # CONSTRUCTOR | Level(Int id, Position robotStartPosition)
+@var this.id = id
 @var this.robotStartPosition = robotStartPosition

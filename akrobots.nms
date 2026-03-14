@@ -104,6 +104,9 @@
         # Constructor for a level which builds the level based on a numeric ID and sets the starting position of the robot.
         Level(Int id, Position robotStartPosition)
 
+        # The internal numeric ID of the level.
+        Int id
+
         # The robot associated with this level, which the player will control to solve the level's challenge.
         akrobots::Robot robot
 
