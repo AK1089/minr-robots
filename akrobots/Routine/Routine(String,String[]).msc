@@ -1,0 +1,3 @@
+# CONSTRUCTOR | Routine(String name, String[] lines)
+@var this.name = name
+@var this.lines = lines

@@ -1,0 +1,7 @@
+# CONSTRUCTOR | Robot(Entity entity, Int id)
+@var this.entity = entity
+@var this.inventory = String["diamond_pickaxe"]
+@var this.currentlyHeldItem = 0
+@var this.id = id
+@var this.startPosition = entity.getPosition()
+@var this.active = false

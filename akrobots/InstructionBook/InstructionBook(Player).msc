@@ -1,0 +1,3 @@
+# CONSTRUCTOR | InstructionBook(Player player)
+@var this.player = player
+@var this.bonusContent = String[]
